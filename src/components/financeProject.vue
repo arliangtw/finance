@@ -2,14 +2,21 @@
     <b-container fluid>
         <b-row>
             <b-col cols="8">
-                <line-chart :data="data1" :title="line-chart-title"></line-chart>
+                <line-chart :data="data1" :title="lineChartTitle"></line-chart>
             </b-col>
             <b-col cols="4">
                 <pie-chart :data="points2" ></pie-chart>
             </b-col>
         </b-row>
         <b-row>
-            <b-col cols="12">2 of 1</b-col>
+            <b-col cols="12">
+                <setting-card></setting-card>
+            </b-col>
+        </b-row>        
+        <b-row>
+            <b-col cols="12">
+                <stock-table :data="stockList" ></stock-table>
+            </b-col>
         </b-row>
     </b-container>
 </template>
@@ -18,11 +25,15 @@
 <script>
 import LineChart from '@/components/lineChart.vue'
 import PieChart from  '@/components/pieChart.vue'
+import StockTable from '@/components/stockTable.vue'
+import SettingCard from '@/components/settingCard.vue'
 
 export default {
     components:{
         LineChart,
-        PieChart     
+        PieChart,
+        StockTable,
+        SettingCard     
     },
     data: function() {
         return {
@@ -42,16 +53,18 @@ export default {
                 }
             ],
             data1: [],
-            LineChartTitle : "an Demo",
-            days:0
+            lineChartTitle : "Stock Demo",
+            days:0,
+            stockList: [],
         }
     },
     beforeDestroy() {
         clearInterval(this.intervalId)
     },    
-    mounted: function() {
+    mounted() {
         this.init();
     },
+    
     methods: {
         init:function(){
             console.log('finance Project mounted')
@@ -69,9 +82,10 @@ export default {
 
                 data1.push(today.getTime()+(mmsForOneDay*this.days))
                 data1.push(parseInt((Math.random() * 10.0).toFixed(0)))
-                console.log(data1)
+                //console.log(data1)
                 this.data1.push(data1)
                 this.days = this.days + 1
+                
             },2000)
 
         }
@@ -81,4 +95,5 @@ export default {
 </script>
 
 <style>
+    
 </style>

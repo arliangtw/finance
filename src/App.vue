@@ -14,7 +14,7 @@
       </keep-alive>
     </main>
     <footer>
-      <my-footer/>
+      <!-- <my-footer/> -->
     </footer>
   </b-container>
 
@@ -23,8 +23,8 @@
 <script>
 import Vue from 'vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-import HelloWorld from '@/components/HelloWorld.vue'
-import MyFooter from '@/components/footer.vue'
+//import HelloWorld from '@/components/HelloWorld.vue'
+//import MyFooter from '@/components/footer.vue'
 import navber from '@/components/navbar.vue'
 // import financeProject from '@/components/my-component.vue'
 import financeProject from '@/components/financeProject.vue'
@@ -43,8 +43,6 @@ Vue.use(IconsPlugin)
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-    MyFooter,
     navber,
     financeProject,
     stockCompare,

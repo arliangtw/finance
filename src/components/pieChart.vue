@@ -63,8 +63,15 @@ export default {
     }
   },
   mounted() {
-    if (typeof this.title !== "undefined") {
-        this.chartOptions.title.text = this.title;
+    console.log('pieChart')
+    this.init()
+    // if (typeof this.title !== "undefined") {
+    //     this.chartOptions.title.text = this.title;
+    // }
+  },
+  methods:{
+    init:()=>{
+      console.log('pieChart init')
     }
   }
 };

@@ -18,7 +18,7 @@ export default {
           }
         ],
         title: {
-          text: "Stock Demo"
+          text: "line Demo"
         }, 
         chart: {
           zoomType: "x",
@@ -73,12 +73,39 @@ export default {
  
     }
   },
+  beforeCreate() { 
+    /* 1 */
+    console.log('beforeCreate') 
+  },
+  created() { 
+    /* 2 */ 
+    console.log('created')
+  },
+  beforeMount() { 
+    /* 3 */ 
+    console.log('beforeMount')
+
+  },
   mounted() {
-    colsole.log(this.title);
-    if (typeof this.title !== "undefined") {
+    /* 4 */
+    console.log('mounted')
+    this.init()
+  },  
+  /* 初始化不會觸發 */
+  beforeUpdate() {
+    console.log('beforeUpdate')
+  },
+  updated() { 
+    console.log('updated') 
+  },
+  methods: {
+    init:function(){
+      console.log('lineChart init')
+      if (typeof this.title !== "undefined") {
         this.chartOptions.title.text = this.title;
+      }
     }
-  }  
+  }
 };
 
 </script>

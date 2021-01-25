@@ -89,4 +89,5 @@ export default {
     .navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
         color: rgb(255, 255, 255);
     } */
+   
 </style>
