@@ -19,10 +19,10 @@
       <b-container fluid>
         <b-row class="mb-2 " align-v="center" >
           <b-col cols="2" class="pr-0 text-right" >
-            <label class="h5 mb-0"  :for="inputIncomde">投資金額:</label>
+            <label class="h5 mb-0" :for="inputIncome">投資金額:</label>
           </b-col>
           <b-col cols="2">
-            <b-form-input :id="inputIncomde" type="number"/>
+            <b-form-input type="number" ref="inputIncome" :id="inputIncome" v-model="income" @change="changeIncome" />
           </b-col>
           <b-col cols="1" class="pl-0">
             <label class="h5 mb-0">萬</label>
@@ -42,6 +42,11 @@
             <b-form-input :id="InputDate_B" type="date"></b-form-input>
           </b-col>
         </b-row>
+        <b-row>
+            <b-col>
+              <b-button @click="makeToast('alarm','請不要亂打',true)">通知</b-button>
+            </b-col>
+        </b-row>
       </b-container>      
     </template>
   </b-card>
@@ -50,51 +55,49 @@
 
 <script>
 export default {
-  props: ["data", "title"],
-  data: function() {
+  props: ["communication"],
+  data() {
     return {
-      show: true
+      show: true,
+      income: 0,
     };
   },
   watch: {
-    title(newValue) {
-      this.chartOptions.title.text = newValue;
-    },
-    data(newValue) {
-      this.chartOptions.series[0].data = newValue
-      //console.log(this.chartOptions.series[0].data) 
- 
+    communication(newValue) {
+      // console.log(newValue)
+      this.income = newValue.settingCard.income;
     }
-  },
-  beforeCreate() { 
-    /* 1 */
-    console.log('beforeCreate') 
-  },
-  created() { 
-    /* 2 */ 
-    console.log('created')
-  },
-  beforeMount() { 
-    /* 3 */ 
-    console.log('beforeMount')
-
   },
   mounted() {
-    /* 4 */
-    console.log('mounted')
     this.init()
   },  
-  /* 初始化不會觸發 */
-  beforeUpdate() {
-    console.log('beforeUpdate')
-  },
-  updated() { 
-    console.log('updated') 
-  },
   methods: {
     init:function(){
-      console.log('lineChart init')
-    }
+      // console.log('lineChart init')
+      // console.log(this.communication)
+      this.income = this.communication.settingCard.income;
+    },
+    changeIncome:function() {
+      // const regex = new RegExp(/[0-9]*/);
+      // let match = regex.test(this.income)
+      // console.log('change:%s',match)
+      if (this.$refs.inputIncome.validity.badInput) {
+        this.makeToast('warning','請不要亂打',true)
+      }else{
+        this.communication.settingCard.income = this.income
+        this.$emit('update-communication',this.communication)
+        
+      }
+
+    },
+    makeToast(variant = 'error' , msg ='hi', append=true) {
+      this.$bvToast.toast( msg, {
+        title: variant=='alarm'?'警告':'錯誤',
+        variant: variant=='alarm'?'warning':'danger',  
+        autoHideDelay: 5000,
+        appendToast: append
+      })
+    },    
   }
 };
 

@@ -10,7 +10,7 @@
         </b-row>
         <b-row>
             <b-col cols="12">
-                <setting-card></setting-card>
+                <setting-card :communication="communication"  @update-communication="communication"></setting-card>
             </b-col>
         </b-row>        
         <b-row>
@@ -66,7 +66,7 @@ export default {
                 },
                 stockTable : [ //投資的項目
                     {
-                        itemName : '現金',
+                        itemName : '現金', //項目
                         amount : 0, //投資金額
                         percent : '100%', //比例
                         income : 0, //獲利
@@ -105,6 +105,9 @@ export default {
                 
             },2000)
 
+        },
+        communication(value){
+            this.communication = value.communication
         }
 
     },
