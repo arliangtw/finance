@@ -27,6 +27,7 @@ import LineChart from '@/components/lineChart.vue'
 import PieChart from  '@/components/pieChart.vue'
 import StockTable from '@/components/stockTable.vue'
 import SettingCard from '@/components/settingCard.vue'
+import stockTableVue from './stockTable.vue'
 
 export default {
     components:{
@@ -37,6 +38,7 @@ export default {
     },
     data: function() {
         return {
+            // 開發時暫時性物件---------------------------
             intervalId:null,
             points2: [
                 {
@@ -56,6 +58,21 @@ export default {
             lineChartTitle : "Stock Demo",
             days:0,
             stockList: [],
+            // 各種components彼此交換訊息的物件---------------------------
+            communication: {
+                settingCard : {
+                    income : 10000, //投資總金額
+                    InputDate : ['2018/11/12','2020/01/27'], //投資日期起訖
+                },
+                stockTable : [ //投資的項目
+                    {
+                        itemName : '現金',
+                        amount : 0, //投資金額
+                        percent : '100%', //比例
+                        income : 0, //獲利
+                    }
+                ],
+            }
         }
     },
     beforeDestroy() {
