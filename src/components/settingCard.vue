@@ -1,18 +1,16 @@
 <template>
   <b-card class="mt-5">
     <template #header>
-      <b-button variant="primary">
-        <b-icon icon="tools"/> 設定目標
+      <b-button variant="primary" @click="show = !show">
+        <b-iconstack font-scale="1" animation="spin">
+          <b-icon stacked icon="tools" scale="0.75" shift-v="-0.25" /> 
+        </b-iconstack>  
+        設定投資範圍
+        <b-icon icon="arrows-collapse" font-scale="1" v-if="show" variant="white" />
+        <b-icon icon="arrows-expand"   font-scale="1" v-else variant="white" />        
       </b-button>
       <b-button class="ml-4 btn-light" 
                 @click="show = !show" >
-        <b-icon icon="arrows-collapse" 
-                font-scale="1" 
-                v-if="show" 
-                variant="danger" />
-        <b-icon icon="arrows-expand"  
-                font-scale="1" 
-                v-else variant="success" />
       </b-button>
     </template>
     <template #default v-if="show">
@@ -33,19 +31,14 @@
             <label class="h5 mb-0" :for="InputDate_A">投資時間(開始):</label>
           </b-col>
           <b-col cols="2">
-            <b-form-input :id="InputDate_A" type="date"></b-form-input>
+            <b-form-input type="date" ref="InputDate_A" :id="InputDate_A" v-model="InputDate_A" @change="changeDate"></b-form-input>
           </b-col>
           <b-col cols="2" class="pr-0 text-right">  
             <label class="h5 mb-0" :for="InputDate_B">投資時間(結束):</label>
           </b-col>
           <b-col cols="2">
-            <b-form-input :id="InputDate_B" type="date"></b-form-input>
+            <b-form-input type="date" ref="InputDate_B" :id="InputDate_B" v-model="InputDate_B" @change="changeDate"></b-form-input>
           </b-col>
-        </b-row>
-        <b-row>
-            <b-col>
-              <b-button @click="makeToast('alarm','請不要亂打',true)">通知</b-button>
-            </b-col>
         </b-row>
       </b-container>      
     </template>
@@ -55,15 +48,17 @@
 
 <script>
 export default {
-  props: ["communication"],
+  props: ["value"],
   data() {
     return {
       show: true,
       income: 0,
+      InputDate_A:"",
+      InputDate_B:"",
     };
   },
   watch: {
-    communication(newValue) {
+    value(newValue) {
       // console.log(newValue)
       this.income = newValue.settingCard.income;
     }
@@ -75,20 +70,38 @@ export default {
     init:function(){
       // console.log('lineChart init')
       // console.log(this.communication)
-      this.income = this.communication.settingCard.income;
+      this.income = this.value.settingCard.income;
     },
     changeIncome:function() {
       // const regex = new RegExp(/[0-9]*/);
       // let match = regex.test(this.income)
       // console.log('change:%s',match)
       if (this.$refs.inputIncome.validity.badInput) {
-        this.makeToast('warning','請不要亂打',true)
+        this.makeToast('warning','金額不要亂打，好嗎',true)
       }else{
-        this.communication.settingCard.income = this.income
-        this.$emit('update-communication',this.communication)
+        this.value.settingCard.income = this.income
+        $emit('value',this.value) //好像這行可以不用
         
       }
+    },
+    changeDate(){
+      if (this.$refs.InputDate_A.validity.badInput || this.$refs.InputDate_B.validity.badInput) {
+        this.makeToast('warning','日期不要亂打，好嗎',true)
+      }else if (this.InputDate_A !='' && this.InputDate_B != ''){
+        const date_A = this.InputDate_A.split('-');
+        const date_B = this.InputDate_B.split('-');
+        const InputDate_A = new Date(date_A[0], date_A[1] - 1, date_A[2]);
+        const InputDate_B = new Date(date_B[0], date_B[1] - 1, date_B[2]);
+        if (InputDate_A < InputDate_B) {
 
+          this.value.settingCard.InputDate[0] = this.InputDate_A
+          this.value.settingCard.InputDate[1] = this.InputDate_B
+          $emit('value',this.value)  //好像這行可以不用
+        }else{
+          this.makeToast('warning','結束日期不能小等於開始日期，好嗎',true)
+        }
+
+      }
     },
     makeToast(variant = 'error' , msg ='hi', append=true) {
       this.$bvToast.toast( msg, {

@@ -1,21 +1,33 @@
 <template>
-    <b-table 
-      :striped="striped"
-      :bordered="bordered"
-      :borderless="borderless"
-      :outlined="outlined"
-      :small="small"
-      :hover="hover"
-      :dark="dark"
-      :fixed="fixed"
-      :foot-clone="footClone"
-      :no-border-collapse="noCollapse"
-      :items="items"
-      :fields="fields"
-      :head-variant="headVariant"
-      :table-variant="tableVariant"
-      class="mt-5"
-    ></b-table>
+  <b-card class="mt-5">
+    <template #header>
+      <b-button variant="primary">
+        <b-iconstack font-scale="1" animation="spin">
+          <b-icon stacked icon="check-square" scale="0.75" shift-v="-0.25" /> 
+        </b-iconstack>  
+        設定投資方向
+      </b-button>      
+    </template>
+    <template #default>
+      <b-table 
+        :striped="striped"
+        :bordered="bordered"
+        :borderless="borderless"
+        :outlined="outlined"
+        :small="small"
+        :hover="hover"
+        :dark="dark"
+        :fixed="fixed"
+        :foot-clone="footClone"
+        :no-border-collapse="noCollapse"
+        :items="items"
+        :fields="fields"
+        :head-variant="headVariant"
+        :table-variant="tableVariant"
+        
+      ></b-table>
+    </template>
+  </b-card>
 <!-- :thead-tr-class="headClass" -->
 </template>
 

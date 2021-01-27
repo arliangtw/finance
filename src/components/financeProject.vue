@@ -10,7 +10,7 @@
         </b-row>
         <b-row>
             <b-col cols="12">
-                <setting-card :communication="communication"  @update-communication="communication"></setting-card>
+                <setting-card v-model="communication"></setting-card>
             </b-col>
         </b-row>        
         <b-row>
@@ -62,7 +62,7 @@ export default {
             communication: {
                 settingCard : {
                     income : 10000, //投資總金額
-                    InputDate : ['2018/11/12','2020/01/27'], //投資日期起訖
+                    InputDate : ['',''], //投資日期起訖
                 },
                 stockTable : [ //投資的項目
                     {
