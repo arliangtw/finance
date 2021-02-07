@@ -1,16 +1,15 @@
 <template>
   <b-card class="mt-5">
     <template #header>
-      <b-button variant="primary" @click="show = !show">
-        <b-iconstack font-scale="1" animation="spin">
-          <b-icon stacked icon="tools" scale="0.75" shift-v="-0.25" /> 
-        </b-iconstack>  
-        設定投資範圍
+      <b class="text-info">設定投資範圍</b>
+
+      <b-button variant="primary" @click="show = !show"  class="ml-3">
+        <!-- <b-iconstack font-scale="1" animation="spin"> -->
+          <!-- <b-icon stacked icon="tools" scale="0.75" shift-v="-0.25" />  -->
+        <!-- </b-iconstack> -->
+        <!-- <b-icon icon="tools" /> -->
         <b-icon icon="arrows-collapse" font-scale="1" v-if="show" variant="white" />
         <b-icon icon="arrows-expand"   font-scale="1" v-else variant="white" />        
-      </b-button>
-      <b-button class="ml-4 btn-light" 
-                @click="show = !show" >
       </b-button>
     </template>
     <template #default v-if="show">
@@ -22,9 +21,9 @@
           <b-col cols="2">
             <b-form-input type="number" ref="inputIncome" :id="inputIncome" v-model="income" @change="changeIncome" />
           </b-col>
-          <b-col cols="1" class="pl-0">
+          <!-- <b-col cols="1" class="pl-0">
             <label class="h5 mb-0">萬</label>
-          </b-col>
+          </b-col> -->
         </b-row>
         <b-row  class="mb-2" align-v="center">
           <b-col cols="2" class="pr-0  text-right">
@@ -68,9 +67,9 @@ export default {
   },  
   methods: {
     init:function(){
-      // console.log('lineChart init')
       // console.log(this.communication)
       this.income = this.value.settingCard.income;
+      this.changeIncome()
     },
     changeIncome:function() {
       // const regex = new RegExp(/[0-9]*/);
@@ -80,6 +79,17 @@ export default {
         this.makeToast('warning','金額不要亂打，好嗎',true)
       }else{
         this.value.settingCard.income = this.income
+        let total = 0;
+        this.value.stockTable.forEach( item => {
+            if (item.itemName != '現金'){
+              total = total + item.amount
+            } 
+        })
+        this.value.stockTable.forEach ( item => {
+            if (item.itemName == '現金'){
+              item.amount = this.income - total
+            } 
+        })
         $emit('value',this.value) //好像這行可以不用
         
       }
@@ -98,7 +108,7 @@ export default {
           this.value.settingCard.InputDate[1] = this.InputDate_B
           $emit('value',this.value)  //好像這行可以不用
         }else{
-          this.makeToast('warning','結束日期不能小等於開始日期，好嗎',true)
+          this.makeToast('warning','結束日期不能小等於開始日期',true)
         }
 
       }

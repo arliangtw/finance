@@ -15,7 +15,7 @@
         </b-row>        
         <b-row>
             <b-col cols="12">
-                <stock-table :data="stockList" ></stock-table>
+                <stock-table v-model="communication" ></stock-table>
             </b-col>
         </b-row>
     </b-container>
